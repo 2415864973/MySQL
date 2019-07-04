@@ -1,0 +1,2 @@
+MySQL解压问题：（已解决
+tar -xvf mysql-8.0.16-linux-glibc2.12-x86_64.tar.xz 
