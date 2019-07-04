@@ -1,0 +1,54 @@
+新用户登录Linux的-bash-4.2$问题解决
+
+
+最近在linux下安装mysql时，用新建的mysql用户登陆linux系统发现是-bash-4.2$状态如下：
+
+
+[root@localhost home]# su - mysql
+
+Last login: Tue Sep  1 10:55:43 CST 2015 on pts/1
+su: warning: cannot change directory to/home/mysql: No such file or directory
+-bash-4.2$
+错误提示是/home目录中没有mysql用户的目录，那么就添加一个mysql目录：
+
+
+[root@localhost home]# mkdir /home/mysql
+
+
+[root@localhost home]# ls
+mysql
+
+再次登录：
+
+
+[root@localhost home]# su - mysql
+
+
+Last login: Tue Sep  1 11:10:27 CST 2015 on pts/1
+-bash-4.2$ 
+
+
+依然是-bash-4.2$状态，这个是因为在linux下通过useradd方式创建新用户时，都会将所有的配置文件从/etc/skel复制到/home目录的新用户录下。但现在这个mysql目录是新建立的，空的，那么就复制/etc/skel这个目录的文件到/home/mysql中：
+
+[root@localhost home]$ cd /etc/skel/
+
+
+[root@localhost skel]$ ls -a
+
+. ..  .bash_logout  .bash_profile .bashrc  .mozilla
+
+[root@localhost skel]$ cp .bash_logout  /home/mysql/
+[root@localhost skel]$ cp .bash_profile  /home/mysql/
+[root@localhost skel]$ cp .bashrc  /home/mysql
+
+
+再次登录，成功：
+
+
+[root@localhost skel]$ su - mysql
+
+Last login: Tue Sep  1 11:11:11 CST 2015 on pts/1
+
+[mysql@localhost ~]$
+
+https://blog.csdn.net/fly43108622/article/details/48155953 
